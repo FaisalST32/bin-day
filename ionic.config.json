@@ -1,0 +1,7 @@
+{
+  "name": "Bin Day",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
