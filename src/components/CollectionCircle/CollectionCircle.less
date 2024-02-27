@@ -1,0 +1,36 @@
+.collection-circle-root {
+	height: 100%;
+	width: 100%;
+	padding: 20px;
+	border-radius: 50%;
+	outline: solid 1px rgb(77, 77, 77);
+	outline-offset: -46px;
+	.circle {
+		transform: rotate(45deg);
+		// transform-origin: 50% 50%;
+		width: 100%;
+		height: 100%;
+		border-radius: 50%;
+		border: solid 25px red;
+		outline: solid 1px rgb(77, 77, 77);
+
+		.circle-inner {
+			transform: rotate(-45deg);
+			// transform-origin: 50% 50%;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: 40px;
+			justify-content: center;
+			width: 100%;
+			height: 100%;
+			gap: 10px;
+			.bins {
+				display: flex;
+				.bin {
+					filter: drop-shadow(0 0 1px #bbb);
+				}
+			}
+		}
+	}
+}
