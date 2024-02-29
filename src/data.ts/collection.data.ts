@@ -4,6 +4,13 @@ type ColorStringDateMapType = Pick<CollectionType, 'color' | 'dateStr'> & {
 	date: string;
 };
 
+export const binColorMap = {
+	blue: 'blue',
+	black: 'black',
+	green: 'green',
+	brown: '#795548',
+} as Record<string, string>;
+
 export const CollectionData: {
 	[collectionKey: string]: ColorStringDateMapType[];
 } = {

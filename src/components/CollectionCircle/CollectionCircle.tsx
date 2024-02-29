@@ -2,17 +2,11 @@ import { useMemo } from 'react';
 import { CollectionType } from '../../types/collection.types';
 import { BinIcon } from '../Bin/Bin';
 import './CollectionCircle.less';
+import { binColorMap } from '../../data.ts/collection.data';
 
 export type CollectionCircleProps = {
 	collection: CollectionType;
 };
-
-export const binColorMap = {
-	blue: 'blue',
-	black: 'black',
-	green: 'green',
-	brown: 'brown',
-} as Record<string, string>;
 
 export const CollectionCircle: React.FC<CollectionCircleProps> = (
 	props: CollectionCircleProps

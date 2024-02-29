@@ -38,8 +38,6 @@ export const Welcome: React.FC = () => {
 
 	return (
 		<Swiper
-			// modules={[IonicSlides]}
-			// pagination={true}
 			style={{ height: '100%' }}
 			onSwiper={setSlidesRef}
 			slidesPerView={1}

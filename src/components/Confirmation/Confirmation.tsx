@@ -3,6 +3,7 @@ import { CollectionType } from '../../types/collection.types';
 import { CollectionCircle } from '../CollectionCircle/CollectionCircle';
 import './Confirmation.less';
 import Confetti from 'react-confetti';
+import { useHistory } from 'react-router';
 // @ts-ignore
 
 export type ConfirmationProps = {
@@ -11,6 +12,7 @@ export type ConfirmationProps = {
 };
 
 export const Confirmation: React.FC<ConfirmationProps> = (props) => {
+	const history = useHistory();
 	return (
 		<>
 			<div className='slide-3'>
@@ -44,7 +46,18 @@ export const Confirmation: React.FC<ConfirmationProps> = (props) => {
 						</div>
 					)}
 				</div>
-				<IonButton color='primary' fill='outline'>
+				<IonButton
+					onClick={() => {
+						localStorage.setItem(
+							'collectionCode',
+							props.collectionCode || ''
+						);
+
+						history.push('/home');
+					}}
+					color='primary'
+					fill='outline'
+				>
 					Continue to App!
 				</IonButton>
 			</div>
