@@ -234,7 +234,11 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 				onDidDismiss={() => setShowAlert(false)}
 				buttons={['Okay']}
 			/>
-			<IonModal isOpen={helpModalShown}>
+			<IonModal
+				initialBreakpoint={1}
+				breakpoints={[0, 1]}
+				isOpen={helpModalShown}
+			>
 				<IonContent>
 					<div className='help-modal'>
 						<div className='help-text'>

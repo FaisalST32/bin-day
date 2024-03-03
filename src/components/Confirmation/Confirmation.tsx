@@ -4,8 +4,7 @@ import { CollectionCircle } from '../CollectionCircle/CollectionCircle';
 import './Confirmation.less';
 import Confetti from 'react-confetti';
 import { useHistory } from 'react-router';
-// @ts-ignore
-
+import * as SettingsService from '../../services/settings.service';
 export type ConfirmationProps = {
 	collectionCode?: string;
 	nextCollection?: CollectionType;
@@ -48,11 +47,9 @@ export const Confirmation: React.FC<ConfirmationProps> = (props) => {
 				</div>
 				<IonButton
 					onClick={() => {
-						localStorage.setItem(
-							'collectionCode',
-							props.collectionCode || ''
+						SettingsService.changeCollectionCode(
+							props.collectionCode
 						);
-
 						history.push('/home');
 					}}
 					color='primary'
