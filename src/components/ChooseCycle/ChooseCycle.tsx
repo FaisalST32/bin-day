@@ -60,6 +60,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 			const result = await FilePicker.pickFiles({
 				multiple: false,
 				types: ['application/pdf'],
+				readData: true,
 			});
 			const { collectionCode, dates } = await extractData(
 				result.files[0]

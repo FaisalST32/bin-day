@@ -3,7 +3,7 @@ import { TextItem, TextMarkedContent } from 'pdfjs-dist/types/src/display/api';
 // @ts-ignore
 import * as pdfjsWorker from 'pdfjs-dist/build/pdf.worker.mjs';
 import { CollectionType } from '../types/collection.types';
-import { getDocument, GlobalWorkerOptions, version } from 'pdfjs-dist';
+import { getDocument, GlobalWorkerOptions } from 'pdfjs-dist';
 
 GlobalWorkerOptions.workerSrc = pdfjsWorker; // `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${version}/pdf.worker.js`;
 
@@ -33,32 +33,6 @@ export function parse(text: string) {
 		}
 	}
 	return parsedData;
-}
-
-// Function to extract dates and bins information
-function extractDatesAndBins(text: string) {
-	const regex = /(\d{1,2}(st|nd|rd|th) \w+): ([\w\s&]+)(?=\s•|$)/g;
-	const matches = [];
-	let match;
-
-	while ((match = regex.exec(text)) !== null) {
-		const date = match[1];
-		const bins = match[3].split(' & ').join(', ');
-		matches.push(`${date}: ${bins}`);
-	}
-
-	return matches;
-}
-
-// Function to format dates and bins information
-function formatOutput(matches: string[]) {
-	let result = '';
-
-	for (const match of matches) {
-		result += match + ' • ';
-	}
-
-	return result.slice(0, -3); // Remove the last ' • '
 }
 
 export const extractData = (
@@ -107,7 +81,18 @@ export const extractData = (
 			}
 			res(result);
 		};
-
-		reader.readAsArrayBuffer(file.blob!);
+		const blob = file.blob ?? dataURItoBlob(file.data!);
+		reader.readAsArrayBuffer(blob);
 	});
 };
+
+function dataURItoBlob(dataURI: string): Blob {
+	const byteString = window.atob(dataURI);
+	const arrayBuffer = new ArrayBuffer(byteString.length);
+	const int8Array = new Uint8Array(arrayBuffer);
+	for (let i = 0; i < byteString.length; i++) {
+		int8Array[i] = byteString.charCodeAt(i);
+	}
+	const blob = new Blob([int8Array], { type: 'application/pdf' });
+	return blob;
+}
