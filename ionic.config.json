@@ -1,7 +1,7 @@
 {
-  "name": "Bin Day",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
+	"name": "Bindicator",
+	"integrations": {
+		"capacitor": {}
+	},
+	"type": "react-vite"
 }

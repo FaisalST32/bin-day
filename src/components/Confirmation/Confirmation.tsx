@@ -50,7 +50,7 @@ export const Confirmation: React.FC<ConfirmationProps> = (props) => {
 						SettingsService.changeCollectionCode(
 							props.collectionCode
 						);
-						history.push('/home');
+						setTimeout(() => history.replace('/home'), 0);
 					}}
 					color='primary'
 					fill='outline'

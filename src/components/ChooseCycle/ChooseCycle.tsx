@@ -14,6 +14,7 @@ import {
 import {
 	getCollectionCodes,
 	getNextCollection,
+	saveCollectionData,
 } from '../../services/data.service';
 import './ChooseCycle.less';
 import {
@@ -45,6 +46,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 		}) => {
 			setCollectionCode(collectionCode);
 			setDates(dates);
+			saveCollectionData(collectionCode, dates);
 			const next = getNextCollection(collectionCode, dates);
 			if (next) {
 				setNextCollection(next);
@@ -238,6 +240,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 				initialBreakpoint={1}
 				breakpoints={[0, 1]}
 				isOpen={helpModalShown}
+				onDidDismiss={() => setHelpModalShown(false)}
 			>
 				<IonContent>
 					<div className='help-modal'>

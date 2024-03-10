@@ -1,15 +1,16 @@
 import { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-	appId: 'io.ionic.starter',
-	appName: 'Bin Day',
+	appId: 'io.zyur.bindicator',
+	appName: 'Bindicator',
 	webDir: 'dist',
 	server: {
 		androidScheme: 'https',
 	},
 	plugins: {
 		LocalNotifications: {
-			// smallIcon: 'ic_stat_icon_config_sample',
+			smallIcon: 'res://drawable/ic_icon_small',
+			largeIcon: 'res://drawable/ic_icon_large',
 			iconColor: '#488AFF',
 			// sound: 'beep.wav',
 		},

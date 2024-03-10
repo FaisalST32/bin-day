@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package io.zyur.bindicator;
 
 import com.getcapacitor.BridgeActivity;
 

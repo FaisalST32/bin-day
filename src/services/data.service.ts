@@ -21,15 +21,32 @@ export const getCollectionCodes = () => {
 
 export const getNextCollection = (code: string, dates?: CollectionType[]) => {
 	// return;
-	const collection = dates ?? CollectionData[code];
+	let collection = dates ?? CollectionData[code];
+	if (!collection) {
+		const collectionStr = window.localStorage.getItem(`collection_${code}`);
+		if (collectionStr) {
+			collection = JSON.parse(collectionStr);
+		}
+	}
+
 	if (!collection) {
 		return '';
 	}
 	let smallestDiff = Infinity;
 	let nearestDate = {} as CollectionType;
-	const today = new Date().getTime();
+	const today = new Date();
+	const todayTime = today.getTime();
 	for (let i = 0; i < collection.length; i++) {
-		const diff = new Date(collection[i].date).getTime() - today;
+		const collectionDate = new Date(collection[i].date);
+		if (
+			collectionDate.toLocaleDateString() === today.toLocaleDateString()
+		) {
+			return {
+				...collection[i],
+				date: collectionDate,
+			};
+		}
+		const diff = collectionDate.getTime() - todayTime;
 		if (diff > 0 && diff < smallestDiff) {
 			smallestDiff = diff;
 			nearestDate = {
@@ -39,4 +56,63 @@ export const getNextCollection = (code: string, dates?: CollectionType[]) => {
 		}
 	}
 	return nearestDate;
+};
+
+export const saveCollectionData = (code: string, dates: CollectionType[]) => {
+	window.localStorage.setItem(`collection_${code}`, JSON.stringify(dates));
+};
+
+export const getDaysToBinColors = (code: string) => {
+	// return;
+	const collection = getCollections(code);
+	if (!collection) {
+		return;
+	}
+	const today = new Date();
+	const todayTime = today.getTime();
+	let result = {
+		black: { diff: Infinity, collection: {} as CollectionType },
+		blue: { diff: Infinity, collection: {} as CollectionType },
+		green: { diff: Infinity, collection: {} as CollectionType },
+		brown: { diff: Infinity, collection: {} as CollectionType },
+	} as Record<string, { diff: number; collection: CollectionType }>;
+	for (let i = 0; i < collection.length; i++) {
+		const diff = new Date(collection[i].date).getTime() - todayTime;
+
+		collection[i].color.forEach((c) => {
+			const color = c.split(' ')[0].toLowerCase();
+			const collectionDate = new Date(collection[i].date);
+
+			if (
+				collectionDate.toLocaleDateString() ===
+				today.toLocaleDateString()
+			) {
+				result[color].diff = diff;
+				result[color].collection = {
+					...collection[i],
+					date: collectionDate,
+				};
+				return;
+			}
+			if (diff > 0 && diff < result[color].diff) {
+				result[color].diff = diff;
+				result[color].collection = {
+					...collection[i],
+					date: collectionDate,
+				};
+			}
+		});
+	}
+	return result;
+};
+
+const getCollections = (code: string) => {
+	let collection = CollectionData[code];
+	if (!collection) {
+		const collectionStr = window.localStorage.getItem(`collection_${code}`);
+		if (collectionStr) {
+			collection = JSON.parse(collectionStr);
+		}
+	}
+	return collection;
 };

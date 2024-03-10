@@ -36,7 +36,7 @@ export const CollectionCircle: React.FC<CollectionCircleProps> = (
 			}`;
 		}
 	}, [props.collection]);
-	console.log(border);
+
 	return (
 		<div className='collection-circle-root'>
 			<div className='circle' style={{ borderColor: border }}>
@@ -44,7 +44,6 @@ export const CollectionCircle: React.FC<CollectionCircleProps> = (
 					<div className='bins'>
 						{props.collection.color.map((bin) => {
 							const binColor = bin.split(' ')[0].toLowerCase();
-							console.log(bin);
 							return (
 								<div className='bin' key={binColor}>
 									<BinIcon

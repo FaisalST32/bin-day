@@ -10,6 +10,12 @@ export const binColorMap = {
 	green: 'green',
 	brown: '#795548',
 } as Record<string, string>;
+export const binColorMapFaded = {
+	blue: '#9999ff',
+	black: '#999999',
+	green: '#99cc99',
+	brown: '#c9bbb6',
+} as Record<string, string>;
 
 export const CollectionData: {
 	[collectionKey: string]: ColorStringDateMapType[];

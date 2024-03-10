@@ -4,7 +4,6 @@ import {
 	IonButtons,
 	IonContent,
 	IonHeader,
-	IonIcon,
 	IonPage,
 	IonTitle,
 	IonToolbar,
@@ -13,16 +12,13 @@ import {
 import { arrowBackOutline, cog } from 'ionicons/icons';
 import { Reminders } from '../components/Reminders/Reminders';
 import './Settings.less';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications, Weekday } from '@capacitor/local-notifications';
 import { CollectionType } from '../types/collection.types';
 import { getNextCollection } from '../services/data.service';
-import {
-	changeReminderSettings,
-	getCollectionCode,
-	getReminderSettings,
-} from '../services/settings.service';
+import { getSettings, changeSettings } from '../services/settings.service';
+import { GeneralSettings } from '../components/GeneralSettings/GeneralSettings';
 
 export type SelectedDayType = 'collectionDay' | 'dayBefore';
 
@@ -31,9 +27,14 @@ export type RemindersSettingsType = {
 	time?: TimeSlotType;
 	enabled: boolean;
 };
+export type GeneralSettingsType = {
+	collectionCode: string;
+	name: string;
+};
 
 export type SettingsType = {
 	reminders?: RemindersSettingsType;
+	general?: GeneralSettingsType;
 };
 
 export type TimeSlotType = {
@@ -42,21 +43,30 @@ export type TimeSlotType = {
 };
 
 export const SettingsPage = () => {
-	const [settings, setSettings] = useState<SettingsType>({
-		reminders: getReminderSettings(),
-	});
+	const [settings, setSettings] = useState<SettingsType>();
 
 	const history = useHistory();
 
-	const onChangeSettings = useCallback((newSettings: SettingsType) => {
-		setSettings(newSettings);
-	}, []);
+	const onChangeSettings = useCallback(
+		(newSettings: Partial<SettingsType>) => {
+			setSettings((prev) => {
+				return JSON.parse(JSON.stringify({ ...prev, ...newSettings }));
+			});
+		},
+		[]
+	);
 
 	const updateNotifications = useCallback(async (settings: SettingsType) => {
-		const collectionCode = getCollectionCode();
-
+		if (
+			!settings.reminders?.enabled ||
+			!settings.reminders.time ||
+			!settings.reminders.collectionDay
+		) {
+			await clearPendingNotifications();
+			return;
+		}
 		const nextCollection: CollectionType = getNextCollection(
-			collectionCode
+			settings.general?.collectionCode ?? ''
 		) as CollectionType;
 
 		const nextNotificationDate = new Date(
@@ -69,6 +79,55 @@ export const SettingsPage = () => {
 			nextNotificationDate.setDate(nextNotificationDate.getDate() - 1);
 		}
 
+		await clearPendingNotifications();
+
+		// const date = new Date();
+		// date.setMinutes(date.getMinutes() + 1);
+		// const scheduled = await LocalNotifications.schedule({
+		// 	notifications: [
+		// 		{
+		// 			body: `Let's take those bins out!`,
+		// 			id: 1,
+		// 			title: 'Bin Time',
+		// 			autoCancel: true,
+		// 			schedule: {
+		// 				allowWhileIdle: true,
+		// 				// at: date,
+		// 				// every: 'day',
+		// 				repeats: true,
+		// 				on: {
+		// 					weekday: date.getDay() + 1,
+		// 					hour: date.getHours(),
+		// 					minute: date.getMinutes(),
+		// 				},
+		// 			},
+		// 		},
+		// 	],
+		// });
+
+		// console.log({ scheduled });
+
+		LocalNotifications.schedule({
+			notifications: [
+				{
+					body: `Let's take those bins out!`,
+					id: 1,
+					title: `It's bin time!`,
+					autoCancel: true,
+					schedule: {
+						allowWhileIdle: true,
+						on: {
+							weekday: nextNotificationDate.getDay() + 1,
+							hour: nextNotificationDate.getHours(),
+							minute: nextNotificationDate.getMinutes(),
+						},
+					},
+				},
+			],
+		});
+	}, []);
+
+	const clearPendingNotifications = useCallback(async () => {
 		const hasNotificationSettings =
 			await LocalNotifications.checkPermissions();
 		console.log('check-noti', hasNotificationSettings);
@@ -80,7 +139,6 @@ export const SettingsPage = () => {
 				return;
 			}
 		}
-
 		const pending = await LocalNotifications.getPending();
 		console.log({ pending });
 
@@ -89,46 +147,13 @@ export const SettingsPage = () => {
 				notifications: pending.notifications,
 			});
 		}
-
-		const date = new Date();
-		date.setMinutes(date.getMinutes() + 1);
-		const scheduled = await LocalNotifications.schedule({
-			notifications: [
-				{
-					body: `Let's take those bins out!`,
-					id: 1,
-					title: 'Bin Time',
-					autoCancel: true,
-					schedule: {
-						allowWhileIdle: true,
-						at: date,
-						every: 'minute',
-					},
-				},
-			],
-		});
-
-		console.log('scheduled', scheduled);
-
-		// LocalNotifications.schedule({
-		// 	notifications: [
-		// 		{
-		// 			body: `Let's take those bins out!`,
-		// 			id: 1,
-		// 			title: 'Bin Time',
-		// 			autoCancel: true,
-		// 			schedule: {
-		// 				allowWhileIdle: true,
-		// 				at: nextNotificationDate,
-		// 				every: 'week',
-		// 			},
-		// 		},
-		// 	],
-		// });
 	}, []);
 
 	const onSaveSettings = useCallback(async () => {
-		changeReminderSettings(settings.reminders);
+		if (!settings) {
+			return;
+		}
+		changeSettings(settings);
 		// update notifications
 		await updateNotifications(settings);
 
@@ -137,6 +162,10 @@ export const SettingsPage = () => {
 	}, [settings]);
 
 	const [present] = useIonToast();
+
+	useEffect(() => {
+		setSettings(getSettings());
+	}, []);
 
 	return (
 		<IonPage className='settings-root'>
@@ -151,7 +180,7 @@ export const SettingsPage = () => {
 					<IonButtons slot='end'>
 						<IonButton
 							onClick={onSaveSettings}
-							color='secondary'
+							color='primary'
 							fill='clear'
 						>
 							Save
@@ -162,20 +191,24 @@ export const SettingsPage = () => {
 			</IonHeader>
 			<IonContent>
 				<div className='settings-content'>
-					<div className='reminder-select'>
-						<div className='section-header'>Reminders</div>
-						<Reminders
-							onChange={(
-								reminderSettings: RemindersSettingsType
-							) => {
-								onChangeSettings({
-									...(settings ?? {}),
-									reminders: reminderSettings,
-								});
-							}}
-							settings={settings?.reminders}
-						/>
-					</div>
+					<div className='section-header'>General</div>
+					<GeneralSettings
+						onChange={(generalSettings: GeneralSettingsType) => {
+							onChangeSettings({
+								general: generalSettings,
+							});
+						}}
+						settings={settings?.general}
+					/>
+					<div className='section-header'>Reminders</div>
+					<Reminders
+						onChange={(reminderSettings: RemindersSettingsType) => {
+							onChangeSettings({
+								reminders: reminderSettings,
+							});
+						}}
+						settings={settings?.reminders}
+					/>
 				</div>
 			</IonContent>
 		</IonPage>

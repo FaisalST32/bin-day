@@ -24,7 +24,9 @@ import './theme/variables.css';
 import { HomePage } from './pages/Home';
 import { SettingsPage } from './pages/Settings';
 
-setupIonicReact();
+setupIonicReact({
+	swipeBackEnabled: false,
+});
 
 const App: React.FC = () => (
 	<IonApp>
@@ -33,9 +35,7 @@ const App: React.FC = () => (
 				<Route exact path='/onboarding'>
 					<Onboarding />
 				</Route>
-				<Route exact path='/home'>
-					<HomePage />
-				</Route>
+				<Route exact path='/home' component={HomePage}></Route>
 				<Route exact path='/settings'>
 					<SettingsPage />
 				</Route>

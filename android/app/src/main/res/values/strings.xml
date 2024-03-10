@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Bin Day</string>
-    <string name="title_activity_main">Bin Day</string>
-    <string name="package_name">io.ionic.starter</string>
-    <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="app_name">Bindicator</string>
+    <string name="title_activity_main">Bindicator</string>
+    <string name="package_name">io.zyur.bindicator</string>
+    <string name="custom_url_scheme">io.zyur.bindicator</string>
 </resources>

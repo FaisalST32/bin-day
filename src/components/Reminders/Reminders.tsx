@@ -46,10 +46,14 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 
 	const onChangeSelectedDay = useCallback(
 		(day: SelectedDayType) => {
+			const timeSlots =
+				day === 'collectionDay'
+					? collectionDayTimeSlots
+					: dayBeforeTimeSlots;
 			props.onChange({
 				...(props?.settings ?? {}),
 				collectionDay: day,
-				time: undefined,
+				time: timeSlots[0],
 			} as RemindersSettingsType);
 		},
 		[props.settings]
@@ -72,7 +76,6 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 			? dayBeforeTimeSlots
 			: undefined;
 	}, [props.settings]);
-	console.log(props.settings);
 
 	return (
 		<>
@@ -84,14 +87,15 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 						}}
 						className='reminders-toggle'
 						justify='space-between'
+						checked={props.settings?.enabled}
 					>
-						Enable Reminders
+						enable reminders
 					</IonToggle>
 				</div>
 				{!!props.settings?.enabled && (
 					<>
 						<div className='day-label'>
-							When would you like to be reminded?
+							when would you like to be reminded?
 						</div>
 						<div className='days-select'>
 							<div
@@ -107,7 +111,7 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 									onChangeSelectedDay('collectionDay');
 								}}
 							>
-								Collection Day
+								on collection day
 							</div>
 							<div
 								className={[
@@ -120,12 +124,12 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 									onChangeSelectedDay('dayBefore');
 								}}
 							>
-								A Day Before
+								a day before
 							</div>
 						</div>
 						{!!timeSlots && (
 							<>
-								<div className='day-label'>Pick a time</div>
+								<div className='day-label'>pick a time</div>
 								<div className='time-slots'>
 									{timeSlots.map((timeSlot) => {
 										return (
@@ -186,6 +190,7 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 				}}
 				canDismiss
 				backdropDismiss
+				className='timer-modal'
 			>
 				<div className='time-picker'>
 					<IonDatetime
