@@ -1,3 +1,4 @@
+import { LocalNotifications } from '@capacitor/local-notifications';
 import {
 	IonBackButton,
 	IonButton,
@@ -9,16 +10,15 @@ import {
 	IonToolbar,
 	useIonToast,
 } from '@ionic/react';
-import { arrowBackOutline, cog } from 'ionicons/icons';
-import { Reminders } from '../components/Reminders/Reminders';
-import './Settings.less';
+import { arrowBackOutline } from 'ionicons/icons';
 import { useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { LocalNotifications, Weekday } from '@capacitor/local-notifications';
-import { CollectionType } from '../types/collection.types';
-import { getNextCollection } from '../services/data.service';
-import { getSettings, changeSettings } from '../services/settings.service';
 import { GeneralSettings } from '../components/GeneralSettings/GeneralSettings';
+import { Reminders } from '../components/Reminders/Reminders';
+import { getNextCollection } from '../services/data.service';
+import { changeSettings, getSettings } from '../services/settings.service';
+import { CollectionType } from '../types/collection.types';
+import './Settings.less';
 
 export type SelectedDayType = 'collectionDay' | 'dayBefore';
 
