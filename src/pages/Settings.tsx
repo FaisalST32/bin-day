@@ -116,6 +116,7 @@ export const SettingsPage = () => {
 					autoCancel: true,
 					schedule: {
 						allowWhileIdle: true,
+						repeats: true,
 						on: {
 							weekday: nextNotificationDate.getDay() + 1,
 							hour: nextNotificationDate.getHours(),
