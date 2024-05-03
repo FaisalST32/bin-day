@@ -1,4 +1,4 @@
-import { LocalNotifications } from '@capacitor/local-notifications';
+import { LocalNotifications, Weekday } from '@capacitor/local-notifications';
 import {
 	IonBackButton,
 	IonButton,
@@ -70,9 +70,9 @@ export const SettingsPage = () => {
 		) as CollectionType;
 
 		const nextNotificationDate = new Date(
-			nextCollection.date.toLocaleDateString() +
+			nextCollection.date.toDateString() +
 				' ' +
-				settings.reminders?.time?.label
+				settings.reminders?.time?.value
 		);
 
 		if (settings.reminders?.collectionDay === 'dayBefore') {
@@ -106,6 +106,11 @@ export const SettingsPage = () => {
 		// });
 
 		// console.log({ scheduled });
+		console.log({
+			weekday: nextNotificationDate.getDay() + 1,
+			hour: nextNotificationDate.getHours(),
+			minute: nextNotificationDate.getMinutes(),
+		});
 
 		LocalNotifications.schedule({
 			notifications: [
@@ -114,13 +119,18 @@ export const SettingsPage = () => {
 					id: 1,
 					title: `It's bin time!`,
 					autoCancel: true,
+
 					schedule: {
 						allowWhileIdle: true,
-						repeats: true,
+						// repeats: true,
+						// every: 'week',
+						// at: nextNotificationDate,
 						on: {
 							weekday: nextNotificationDate.getDay() + 1,
 							hour: nextNotificationDate.getHours(),
 							minute: nextNotificationDate.getMinutes(),
+							// hour: nextNotificationDate.getHours(),
+							// minute: nextNotificationDate.getMinutes(),
 						},
 					},
 				},

@@ -204,6 +204,7 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 							onChangeTimeSlot({ label: time, value: time });
 						}}
 						presentation='time'
+						hourCycle='h12'
 					></IonDatetime>
 				</div>
 			</IonModal>
