@@ -19,8 +19,9 @@ export const GeneralSettings: React.FC<GeneralSettingsProps> = (
 				name,
 			} as GeneralSettingsType);
 		},
-		[props.settings?.name]
+		[props.settings]
 	);
+
 	const onChangeCollectionCode = useCallback(
 		(code: string) => {
 			props.onChange({

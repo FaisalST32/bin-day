@@ -19,6 +19,7 @@ import { getNextCollection } from '../services/data.service';
 import { changeSettings, getSettings } from '../services/settings.service';
 import { CollectionType } from '../types/collection.types';
 import './Settings.less';
+import { Capacitor } from '@capacitor/core';
 
 export type SelectedDayType = 'collectionDay' | 'dayBefore';
 
@@ -62,7 +63,7 @@ export const SettingsPage = () => {
 			!settings.reminders.time ||
 			!settings.reminders.collectionDay
 		) {
-			await clearPendingNotifications();
+			await prepareNotifications();
 			return;
 		}
 		const nextCollection: CollectionType = getNextCollection(
@@ -79,38 +80,7 @@ export const SettingsPage = () => {
 			nextNotificationDate.setDate(nextNotificationDate.getDate() - 1);
 		}
 
-		await clearPendingNotifications();
-
-		// const date = new Date();
-		// date.setMinutes(date.getMinutes() + 1);
-		// const scheduled = await LocalNotifications.schedule({
-		// 	notifications: [
-		// 		{
-		// 			body: `Let's take those bins out!`,
-		// 			id: 1,
-		// 			title: 'Bin Time',
-		// 			autoCancel: true,
-		// 			schedule: {
-		// 				allowWhileIdle: true,
-		// 				// at: date,
-		// 				// every: 'day',
-		// 				repeats: true,
-		// 				on: {
-		// 					weekday: date.getDay() + 1,
-		// 					hour: date.getHours(),
-		// 					minute: date.getMinutes(),
-		// 				},
-		// 			},
-		// 		},
-		// 	],
-		// });
-
-		// console.log({ scheduled });
-		console.log({
-			weekday: nextNotificationDate.getDay() + 1,
-			hour: nextNotificationDate.getHours(),
-			minute: nextNotificationDate.getMinutes(),
-		});
+		await prepareNotifications();
 
 		LocalNotifications.schedule({
 			notifications: [
@@ -119,18 +89,14 @@ export const SettingsPage = () => {
 					id: 1,
 					title: `It's bin time!`,
 					autoCancel: true,
-
+					sound: 'chime.wav',
+					channelId: 'bindicator-channel',
 					schedule: {
 						allowWhileIdle: true,
-						// repeats: true,
-						// every: 'week',
-						// at: nextNotificationDate,
 						on: {
 							weekday: nextNotificationDate.getDay() + 1,
 							hour: nextNotificationDate.getHours(),
 							minute: nextNotificationDate.getMinutes(),
-							// hour: nextNotificationDate.getHours(),
-							// minute: nextNotificationDate.getMinutes(),
 						},
 					},
 				},
@@ -138,20 +104,42 @@ export const SettingsPage = () => {
 		});
 	}, []);
 
-	const clearPendingNotifications = useCallback(async () => {
+	const addAndroidNotificationChannel = useCallback(async () => {
+		const platform = Capacitor.getPlatform();
+		if (platform !== 'android') {
+			return;
+		}
+		const channelsList = await LocalNotifications.listChannels();
+		if (
+			!channelsList?.channels?.length ||
+			!channelsList.channels.some((c) => c.id === 'bindicator-channel')
+		) {
+			await LocalNotifications.createChannel({
+				id: 'bindicator-channel',
+				name: 'Default',
+				importance: 5,
+				description: 'Default channel',
+				sound: 'chime.wav',
+				vibration: true,
+				visibility: 1,
+			});
+		}
+	}, []);
+
+	const prepareNotifications = useCallback(async () => {
 		const hasNotificationSettings =
 			await LocalNotifications.checkPermissions();
-		console.log('check-noti', hasNotificationSettings);
 		if (hasNotificationSettings.display !== 'granted') {
 			const hasPermission = await LocalNotifications.requestPermissions();
+
 			if (hasPermission.display !== 'granted') {
-				console.log('noti-after', hasPermission);
 				present('Check your notification settings', 2000);
 				return;
+			} else {
+				await addAndroidNotificationChannel();
 			}
 		}
 		const pending = await LocalNotifications.getPending();
-		console.log({ pending });
 
 		if (pending.notifications.length > 0) {
 			await LocalNotifications.cancel({

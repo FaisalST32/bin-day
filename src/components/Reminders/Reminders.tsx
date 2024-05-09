@@ -1,4 +1,4 @@
-import { IonDatetime, IonModal, IonToggle } from '@ionic/react';
+import { IonButton, IonDatetime, IonModal, IonToggle } from '@ionic/react';
 import { useCallback, useMemo, useState } from 'react';
 import './Reminders.less';
 import {
@@ -33,6 +33,7 @@ export type RemindersProps = {
 
 export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 	const [showCustomTime, setShowCustomTime] = useState<boolean>(false);
+	const [tempCustomTime, setTempCustomTime] = useState<string>();
 
 	const onToggleReminders = useCallback(
 		(isChecked: boolean) => {
@@ -201,11 +202,38 @@ export const Reminders: React.FC<RemindersProps> = (props: RemindersProps) => {
 								hour: '2-digit',
 								minute: '2-digit',
 							});
-							onChangeTimeSlot({ label: time, value: time });
+							setTempCustomTime(time);
 						}}
 						presentation='time'
 						hourCycle='h12'
 					></IonDatetime>
+					<div>
+						<IonButton
+							onClick={() => {
+								setShowCustomTime(false);
+								setTempCustomTime(undefined);
+							}}
+							color={'secondary'}
+							fill='clear'
+						>
+							Cancel
+						</IonButton>
+						<IonButton
+							fill='clear'
+							disabled={!tempCustomTime}
+							onClick={() => {
+								setShowCustomTime(false);
+								tempCustomTime &&
+									onChangeTimeSlot({
+										label: tempCustomTime,
+										value: tempCustomTime,
+									});
+								setTempCustomTime(undefined);
+							}}
+						>
+							Set
+						</IonButton>
+					</div>
 				</div>
 			</IonModal>
 		</>
