@@ -171,10 +171,7 @@ export const SettingsPage = () => {
 			<IonHeader className='icon-header ion-no-border'>
 				<IonToolbar color='red'>
 					<IonButtons slot='start'>
-						<IonBackButton
-							icon={arrowBackOutline}
-							text={''}
-						></IonBackButton>
+						<IonBackButton icon={arrowBackOutline} text={''} />
 					</IonButtons>
 					<IonButtons slot='end'>
 						<IonButton
