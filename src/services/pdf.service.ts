@@ -18,10 +18,10 @@ export function parse(text: string) {
 			year = +line.split(' ')[1];
 			continue;
 		}
-		const regex = /(\d{1,2}(st|nd|rd|th) \w+): ([\w\s&]+)(?=\s•|$)/g;
+		const regex = /(\d{1,2}\s\w+): ([\w\s&]+)(?=\s•|$|\s())/g;
 		if (regex.test(line)) {
 			const [dateStr, colors] = line.replace('• ', '').split(': ');
-			const colorsArr = colors.split(' & ');
+			const colorsArr = colors.split(' & ').map(c => c.replace(/\(\w+\)/g, '').trim())
 			const date = new Date(
 				dateStr.replace(/st|nd|rd|th/g, '') + ' ' + year
 			);
@@ -69,16 +69,18 @@ export const extractData = (
 					)
 					.join('\n');
 				extractedPages.push(pageText);
-				if (i === 7 || i === 8) {
+				if (i === 4 || i === 5) {
 					// Extract dates and bins information
 					const datesAndBins = parse(pageText);
 					result.dates.push(...datesAndBins);
 				}
 				if (i === 1) {
 					const split = pageText.split('\n');
-					result.collectionCode = split[split.length - 1];
+					const collectionCodeIndex = split.findIndex(line => line.includes('Brown bin Blue bin Green bin Black bin')) + 1;
+					result.collectionCode = split[collectionCodeIndex];
 				}
 			}
+			console.log(extractedPages);
 			res(result);
 		};
 		const blob = file.blob ?? dataURItoBlob(file.data!);

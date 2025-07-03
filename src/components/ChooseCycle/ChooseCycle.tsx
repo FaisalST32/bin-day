@@ -192,7 +192,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 										);
 									})}
 								</IonSelect>
-								<IonButton
+								{/* <IonButton
 									onClick={() => {
 										setUploadMode(true);
 										setCollectionCode('');
@@ -202,7 +202,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 									size='small'
 								>
 									Can't find your code?
-								</IonButton>
+								</IonButton> */}
 								{/* <IonButton onClick={pickFile}>Done!</IonButton> */}
 							</>
 						)}
