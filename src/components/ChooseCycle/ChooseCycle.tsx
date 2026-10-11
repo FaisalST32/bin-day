@@ -60,7 +60,7 @@ export const ChooseCycle: React.FC<ChooseCycleProps> = (props) => {
 	const pickFile = useCallback(async () => {
 		try {
 			const result = await FilePicker.pickFiles({
-				multiple: false,
+				limit: 1,
 				types: ['application/pdf'],
 				readData: true,
 			});

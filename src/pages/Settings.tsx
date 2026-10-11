@@ -91,6 +91,7 @@ export const SettingsPage = () => {
 					autoCancel: true,
 					sound: 'chime.wav',
 					channelId: 'bindicator-channel',
+					isExactNotification: false,
 					schedule: {
 						allowWhileIdle: true,
 						on: {
