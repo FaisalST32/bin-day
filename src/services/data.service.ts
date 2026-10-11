@@ -2,21 +2,9 @@ import { CollectionData } from '../data.ts/collection.data';
 import { CollectionType } from '../types/collection.types';
 
 export const getCollectionCodes = () => {
-	return [
-		{ label: 'FRIAA', code: 'FRIAA' },
-		{ label: 'FRIBB', code: 'FRIBB' },
-		{ label: 'FRICC', code: 'FRICC' },
-		{ label: 'FRIDD', code: 'FRIDD' },
-		{ label: 'THUAA', code: 'THUAA' },
-		{ label: 'THUCC', code: 'THUCC' },
-		{ label: 'THUDD', code: 'THUDD' },
-		{ label: 'TUEBB', code: 'TUEBB' },
-		{ label: 'TUECC', code: 'TUECC' },
-		{ label: 'TUEDD', code: 'TUEDD' },
-		{ label: 'WEDAA', code: 'WEDAA' },
-		{ label: 'WEDCC', code: 'WEDCC' },
-		{ label: 'WEDDD', code: 'WEDDD' },
-	];
+	return Object.keys(CollectionData)
+		.sort()
+		.map((code) => ({ label: code, code }));
 };
 
 export const getNextCollection = (code: string, dates?: CollectionType[]) => {
