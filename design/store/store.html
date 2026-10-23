@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Bindicator store art</title>
+<style>
+	* { box-sizing: border-box; margin: 0; padding: 0; }
+	:root { --sys: -apple-system, BlinkMacSystemFont, system-ui, 'Helvetica Neue', sans-serif; }
+	html, body { width: 100vw; height: 100vh; overflow: hidden; }
+	body { font-family: var(--sys); -webkit-font-smoothing: antialiased; }
+
+	.slide { position: relative; width: 100vw; height: 100vh; overflow: hidden; color: #16181d; }
+	.slide.dark { color: #fff; }
+
+	.head { position: absolute; left: 6vw; right: 6vw; top: var(--head-top); display: flex; align-items: center; justify-content: space-between; }
+	.brand { display: flex; align-items: center; gap: calc(var(--u) * 6); }
+	.brand .m { height: calc(var(--u) * 30); }
+	.brand .w { height: calc(var(--u) * 13); }
+	.tag { font-size: calc(var(--u) * 11); font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.55; }
+
+	h1 { position: absolute; left: 6vw; right: 6vw; top: var(--h1-top); font-size: var(--h1); line-height: 1.04; font-weight: 800; letter-spacing: -0.035em; }
+	h1 mark { white-space: nowrap; color: #fff; padding: 0 0.14em; border-radius: 0.16em; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+	.sub { position: absolute; left: 6vw; right: 6vw; top: var(--sub-top); font-size: var(--sub); line-height: 1.35; font-weight: 500; opacity: 0.72; }
+
+	.device { position: absolute; left: 50%; top: var(--dev-top); transform-origin: top center; }
+	.phone { width: 460px; height: 976px; border-radius: 72px; background: #0e0f12; padding: 10px; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, 0.45), inset 0 0 0 2px #2a2c31; }
+	.tablet { width: 1072px; height: 1416px; border-radius: 56px; background: #0e0f12; padding: 20px; box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.4), inset 0 0 0 3px #2a2c31; }
+	.screen { position: relative; width: 100%; height: 100%; border-radius: 62px; overflow: hidden; background: #f5f3ee; }
+	.tablet .screen { border-radius: 38px; }
+	.screen > img.shot { position: absolute; left: 0; width: 100%; display: block; }
+	.island { position: absolute; top: 11px; left: 50%; width: 126px; height: 37px; margin-left: -63px; border-radius: 20px; background: #000; z-index: 5; }
+	.status { position: absolute; top: 0; left: 0; right: 0; height: 54px; display: flex; align-items: center; justify-content: space-between; padding: 6px 34px 0 46px; font: 600 17px var(--sys); z-index: 4; }
+	.status .icons { display: flex; gap: 6px; align-items: center; }
+	.status.light { color: #fff; }
+
+	.mascot { position: absolute; filter: drop-shadow(0 18px 24px rgba(0, 0, 0, 0.22)); z-index: 10; }
+
+	/* lock screen scene */
+	.lock { position: absolute; inset: 0; background: linear-gradient(180deg, #161d45 0%, #2f3784 55%, #6a5bb0 100%); color: #fff; }
+	.lock .date { position: absolute; top: 74px; width: 100%; text-align: center; font: 600 21px var(--sys); opacity: 0.9; }
+	.lock .time { position: absolute; top: 96px; width: 100%; text-align: center; font: 700 104px 'SF Pro Rounded', var(--sys); letter-spacing: -0.02em; }
+	.lock .lw { position: absolute; top: 236px; left: 50%; width: 72px; margin-left: -36px; }
+	.lock .notif { position: absolute; left: 14px; right: 14px; top: 420px; border-radius: 24px; padding: 13px 13px 13px 14px; display: flex; gap: 11px; align-items: center; background: rgba(40, 44, 78, 0.62); backdrop-filter: blur(20px); }
+	.lock .notif .ic { width: 38px; height: 38px; border-radius: 9px; flex-shrink: 0; align-self: flex-start; margin-top: 2px; }
+	.lock .notif .tx { flex: 1; font: 15px var(--sys); line-height: 1.28; }
+	.lock .notif .tx b { display: block; font-weight: 600; }
+	.lock .notif .tp { display: flex; justify-content: space-between; font-weight: 600; }
+	.lock .notif .tp span { opacity: 0.6; font-weight: 400; font-size: 13px; }
+	.lock .notif .th { width: 50px; height: 50px; border-radius: 10px; flex-shrink: 0; }
+	.lock .la { position: absolute; left: 34px; top: 536px; width: 372px; }
+	.lock .btn { position: absolute; bottom: 40px; width: 50px; height: 50px; border-radius: 50%; background: rgba(255, 255, 255, 0.16); }
+
+	/* home screen scene */
+	.home { position: absolute; inset: 0; background: linear-gradient(165deg, #4f63c9 0%, #8a63bf 48%, #e39a7a 100%); color: #fff; }
+	.home .w { position: absolute; border-radius: 23px; box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.35); }
+	.home .app { position: absolute; width: 68px; text-align: center; font: 500 12px var(--sys); }
+	.home .app i { display: block; width: 64px; height: 64px; margin: 0 auto 6px; border-radius: 15px; background: rgba(255, 255, 255, 0.28); }
+	.home .app img { display: block; width: 64px; height: 64px; margin: 0 auto 6px; border-radius: 15px; }
+	.home .dock { position: absolute; left: 14px; right: 14px; bottom: 26px; height: 96px; border-radius: 34px; background: rgba(255, 255, 255, 0.24); }
+	.home .dock i { position: absolute; top: 16px; width: 64px; height: 64px; border-radius: 15px; background: rgba(255, 255, 255, 0.32); }
+
+	/* feature graphic */
+	.feature { position: relative; width: 100vw; height: 100vh; overflow: hidden; background: radial-gradient(90% 120% at 25% 30%, #fff4ea 0%, #ffd6be 100%); }
+	.feature .logo { position: absolute; left: 7vw; top: 16vh; display: flex; align-items: center; gap: 1.2vw; }
+	.feature .logo .m { height: 19vh; }
+	.feature .logo .w { height: 6vh; }
+	.feature h2 { position: absolute; left: 7vw; top: 44vh; width: 46vw; font-size: 5.2vw; line-height: 1.05; font-weight: 800; letter-spacing: -0.035em; color: #16181d; }
+	.feature h2 mark { background: #f15025; color: #fff; padding: 0 0.12em; border-radius: 0.16em; }
+	.feature .crew { position: absolute; right: 3vw; bottom: 8vh; display: flex; align-items: flex-end; }
+	.feature .crew img { height: 42vh; width: auto; margin-left: -6.5vw; filter: drop-shadow(0 10px 12px rgba(80, 30, 10, 0.22)); }
+	.feature .crew img:first-child { margin-left: 0; }
+	.feature .crew img.big { height: 64vh; z-index: 2; position: relative; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+const params = new URLSearchParams(location.search);
+const device = params.get('device') || 'iphone';
+const id = params.get('slide') || 'today';
+const A = 'assets/';
+
+const W = innerWidth, H = innerHeight;
+const u = device === 'ipad' ? W / 640 : W / 440;
+const layout = {
+	iphone: { headTop: 0.05, h1Top: 0.105, h1: 0.092, sub: 0.036, devScale: 0.8, devTop: 0.355 },
+	play: { headTop: 0.05, h1Top: 0.11, h1: 0.08, sub: 0.033, devScale: 0.66, devTop: 0.37 },
+	ipad: { headTop: 0.045, h1Top: 0.095, h1: 0.066, sub: 0.026, devScale: 0.8, devTop: 0.315 },
+}[device];
+
+const SLIDES = {
+	today: {
+		bg: 'radial-gradient(120% 70% at 30% 20%, #fff6ee 0%, #ffd9c4 100%)', mark: '#f15025', tag: 'Wigan bin days',
+		h1: 'Never miss <mark>bin day</mark> again', sub: 'Your Wigan collection dates and what goes in each bin, at a glance.',
+		screen: { shot: 'today.png' }, ipad: 'ipad-today.png', mascot: 'mascot-wave.png', side: 'left',
+	},
+	reminders: {
+		bg: 'radial-gradient(120% 70% at 30% 20%, #eef3ff 0%, #bccffd 100%)', mark: '#2f6fed', tag: 'Reminders',
+		h1: 'A nudge the <mark>night before</mark>', sub: 'Reminders that name your bins, so you know exactly which ones go out.',
+		screen: { lock: true }, ipad: 'ipad-reminders.png', mascot: 'mascot-blue.png', side: 'left',
+	},
+	binnight: {
+		bg: 'radial-gradient(120% 70% at 30% 15%, #26306a 0%, #0c1024 100%)', mark: '#4f6ef7', tag: 'Bin night', dark: true,
+		h1: 'Bin night? <mark>Slide</mark> when it\u2019s out', sub: 'Tick it off in the app, or right from your lock screen.',
+		screen: { shot: 'binnight.png', dark: true }, ipad: 'ipad-binnight.png', mascot: 'mascot-thumbs.png', side: 'left',
+	},
+	widgets: {
+		bg: 'radial-gradient(120% 70% at 30% 20%, #eefaf0 0%, #bfe5c7 100%)', mark: '#3a9a4f', tag: 'Widgets',
+		h1: 'Your bins on your <mark>home screen</mark>', sub: 'Widgets for your home screen and lock screen.',
+		screen: { home: true }, mascot: 'mascot-green.png', side: 'right',
+	},
+	schedule: {
+		bg: 'radial-gradient(120% 70% at 30% 20%, #fbf3ec 0%, #e6cfbd 100%)', mark: '#8a5a3b', tag: 'Schedule',
+		h1: 'Every collection <mark>at a glance</mark>', sub: 'Month, list or by bin, with holiday changes flagged early.',
+		screen: { shot: 'schedule.png' }, ipad: 'ipad-schedule.png', mascot: 'mascot-brown.png', side: 'left',
+	},
+	setup: {
+		bg: 'radial-gradient(120% 70% at 30% 20%, #f3f4f7 0%, #cfd4de 100%)', mark: '#2b2f36', tag: 'Setup',
+		h1: 'Set up in <mark>seconds</mark>', sub: 'Type the code from your council calendar. That\u2019s it.',
+		screen: { shot: 'onboarding.png' }, ipad: 'ipad-onboarding.png', mascot: 'mascot-black.png', side: 'right',
+	},
+};
+
+const statusBar = (light, time = '9:41') => `
+	<div class="status ${light ? 'light' : ''}"><span>${time}</span><span class="icons">
+		<svg width="19" height="12" viewBox="0 0 19 12" fill="currentColor"><rect x="0" y="8" width="3.2" height="4" rx="1"/><rect x="5" y="5.5" width="3.2" height="6.5" rx="1"/><rect x="10" y="3" width="3.2" height="9" rx="1"/><rect x="15" y="0" width="3.2" height="12" rx="1"/></svg>
+		<svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.3c2.4 0 4.6.9 6.2 2.5l1.2-1.2C13.9 1.6 11.3.5 8.5.5S3.1 1.6 1.1 3.6l1.2 1.2C3.9 3.2 6.1 2.3 8.5 2.3zm0 3.4c1.5 0 2.8.6 3.8 1.5l1.2-1.2C12.2 4.7 10.4 3.9 8.5 3.9S4.8 4.7 3.5 6l1.2 1.2c1-1 2.3-1.5 3.8-1.5zm0 3.4c.6 0 1.1.2 1.5.6L8.5 11.2 7 9.7c.4-.4.9-.6 1.5-.6z"/></svg>
+		<svg width="27" height="13" viewBox="0 0 27 13"><rect x="0.5" y="0.5" width="23" height="12" rx="3.8" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="20" height="9" rx="2.5" fill="currentColor"/><rect x="24.5" y="4" width="1.8" height="5" rx="0.9" fill="currentColor" opacity="0.4"/></svg>
+	</span></div>`;
+
+const lockScene = () => `
+	<div class="lock">
+		<div class="date">Thursday 15 October</div>
+		<div class="time">20:00</div>
+		<img class="lw" src="${A}lock-circle.png" />
+		<div class="notif">
+			<img class="ic" src="${A}appicon.png" />
+			<div class="tx"><div class="tp">Bindicator<span>now</span></div><b>Blue bin tomorrow</b>Time to wheel it out \u{1F319} Collections start at 6 am.</div>
+			<img class="th" src="${A}notif-blue.jpg" />
+		</div>
+		<img class="la" src="${A}live-activity.png" />
+		<i class="btn" style="left:46px"></i><i class="btn" style="right:46px"></i>
+	</div>${statusBar(true, '')}`;
+
+const homeScene = () => {
+	const apps = (row, top, list) => list.map((name, i) =>
+		name === 'Bindicator'
+			? `<div class="app" style="top:${top}px;left:${30 + i * 101}px"><img src="${A}appicon.png" />Bindicator</div>`
+			: `<div class="app" style="top:${top}px;left:${30 + i * 101}px"><i></i>${name}</div>`).join('');
+	const grid = [['Weather', 'Maps'], ['Photos', 'Notes']].map((r, ri) => r.map((name, i) =>
+		`<div class="app" style="top:${74 + ri * 98}px;left:${232 + i * 101}px"><i></i>${name}</div>`).join('')).join('');
+	return `
+	<div class="home">
+		<img class="w" src="${A}small.png" style="left:30px;top:74px;width:170px" />
+		${grid}
+		<img class="w" src="${A}medium.png" style="left:38px;top:282px;width:364px" />
+		${apps(0, 482, ['Clock', 'Wallet', 'Health', 'Bindicator'])}
+		${apps(0, 580, ['Music', 'Mail', 'Calendar', 'Camera'])}
+		<div class="dock">${[0, 1, 2, 3].map((i) => `<i style="left:${20 + i * 101}px"></i>`).join('')}</div>
+	</div>${statusBar(true)}`;
+};
+
+const phone = (s) => {
+	let inner;
+	if (s.screen.lock) inner = lockScene();
+	else if (s.screen.home) inner = homeScene();
+	else inner = `<img class="shot" style="top:54px" src="${A}${s.screen.shot}" />${statusBar(s.screen.dark)}`;
+	const bg = s.screen.dark ? '#0d0e11' : '#f5f3ee';
+	return `<div class="phone"><div class="screen" style="background:${bg}">${inner}<div class="island"></div></div></div>`;
+};
+
+const tablet = (s) => `<div class="tablet"><div class="screen" style="background:${s.dark ? '#0d0e11' : '#f5f3ee'}">
+	<img class="shot" style="top:0" src="${A}${s.ipad}" /></div></div>`;
+
+if (device === 'feature') {
+	document.getElementById('root').innerHTML = `
+	<div class="feature">
+		<div class="logo"><img class="m" src="${A}mascot-wave.png" /><img class="w" src="${A}wordmark.png" /></div>
+		<h2>Never miss<br><mark>bin day</mark> again</h2>
+		<div class="crew">
+			<img src="${A}mascot-blue.png" /><img class="big" src="${A}mascot-thumbs.png" /><img class="back" src="${A}mascot-green.png" style="transform: scaleX(-1)" />
+		</div>
+	</div>`;
+} else {
+	const s = SLIDES[id];
+	const isPad = device === 'ipad';
+	const devEl = isPad ? tablet(s) : phone(s);
+	const devW = isPad ? 1072 : 460;
+	const scale = (W * layout.devScale) / devW;
+	const tilt = isPad ? 0 : s.side === 'left' ? 2.5 : -2.5;
+	const mascotH = H * (isPad ? 0.18 : device === 'play' ? 0.2 : 0.17);
+	const mascotStyle = s.side === 'left'
+		? `left:${-W * 0.02}px; top:${H - mascotH * 1.02}px; height:${mascotH}px; transform: rotate(-6deg)`
+		: `right:${-W * 0.02}px; top:${H - mascotH * 1.02}px; height:${mascotH}px; transform: scaleX(-1) rotate(-6deg)`;
+	document.getElementById('root').innerHTML = `
+	<div class="slide ${s.dark ? 'dark' : ''}" style="background:${s.bg};
+		--u:${u}px; --head-top:${H * layout.headTop}px; --h1-top:${H * layout.h1Top}px; --h1:${W * layout.h1}px;
+		--sub:${W * layout.sub}px; --dev-top:${H * layout.devTop}px">
+		<div class="head"><div class="brand"><img class="m" src="${A}mascot-wave.png" /><img class="w" src="${A}wordmark.png" /></div><div class="tag">${s.tag}</div></div>
+		<h1>${s.h1.replace('<mark>', `<mark style="background:${s.mark}">`)}</h1>
+		<p class="sub"></p>
+		<div class="device" style="transform: translateX(-50%) scale(${scale}) rotate(${tilt}deg)">${devEl}</div>
+		${s.mascot ? `<img class="mascot" src="${A}${s.mascot}" style="${mascotStyle}" />` : ''}
+	</div>`;
+	const sub = document.querySelector('.sub');
+	sub.textContent = s.sub;
+	const h1 = document.querySelector('h1');
+	sub.style.top = `${h1.offsetTop + h1.offsetHeight + W * 0.025}px`;
+	const devTop = h1.offsetTop + h1.offsetHeight + sub.offsetHeight + W * 0.07;
+	document.querySelector('.device').style.top = `${Math.max(devTop, H * layout.devTop * 0.9)}px`;
+}
+</script>
+</body>
+</html>

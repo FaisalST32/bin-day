@@ -1,0 +1,12 @@
+[
+ {"path":"/tabs/today","now":"2026-10-11T12:00:00","out":"raw/today.png"},
+ {"path":"/tabs/today","now":"2026-10-15T20:30:00","out":"raw/binnight.png","wait":1800},
+ {"path":"/tabs/schedule","now":"2026-10-11T12:00:00","out":"raw/schedule.png"},
+ {"path":"/tabs/settings/reminders","now":"2026-10-11T12:00:00","out":"raw/reminders.png"},
+ {"path":"/onboarding","settings":null,"out":"raw/onboarding.png","steps":[{"click":"text=Get started"},{"fill":["input.text-input","Sam"]},{"click":"text=Continue"},{"fill":["input[aria-label=\"Collection code\"]","FRIDDG"],"wait":900}]},
+ {"path":"/tabs/today","now":"2026-10-11T12:00:00","out":"raw/ipad-today.png","width":1032,"height":1376,"scale":2},
+ {"path":"/tabs/today","now":"2026-10-15T20:30:00","out":"raw/ipad-binnight.png","width":1032,"height":1376,"scale":2,"wait":1800},
+ {"path":"/tabs/schedule","now":"2026-10-11T12:00:00","out":"raw/ipad-schedule.png","width":1032,"height":1376,"scale":2},
+ {"path":"/tabs/settings/reminders","now":"2026-10-11T12:00:00","out":"raw/ipad-reminders.png","width":1032,"height":1376,"scale":2},
+ {"path":"/onboarding","settings":null,"out":"raw/ipad-onboarding.png","width":1032,"height":1376,"scale":2,"steps":[{"click":"text=Get started"},{"fill":["input.text-input","Sam"]},{"click":"text=Continue"},{"fill":["input[aria-label=\"Collection code\"]","FRIDDG"],"wait":900}]}
+]
