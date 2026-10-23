@@ -17,9 +17,8 @@ const config: CapacitorConfig = {
 			androidScaleType: 'CENTER_CROP',
 		},
 		LocalNotifications: {
-			smallIcon: 'res://drawable/ic_icon_small',
-			largeIcon: 'res://drawable/ic_icon_large',
-			iconColor: '#488AFF',
+			smallIcon: 'res://drawable/ic_stat_bin',
+			iconColor: '#F15025',
 			// sound: 'beep.wav',
 		},
 	},

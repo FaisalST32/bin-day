@@ -12,6 +12,8 @@ export type PlannedReminder = {
 	title: string;
 	body: string;
 	collectionKey?: string;
+	/** Bins pictured on the notification; none means the app mascot. */
+	bins?: BinKind[];
 };
 
 /** How far ahead to schedule; iOS keeps at most 64 pending notifications. */
@@ -47,7 +49,7 @@ export const planReminders = (settings: Settings, now = new Date()): PlannedRemi
 		const phrase = binsPhrase(bins);
 		const plural = bins.length > 1;
 		const moved = isMoved(code, c);
-		const movedNote = moved ? ` Note: this is a ${weekdayName(c.date)} this week.` : '';
+		const movedNote = moved ? ` Heads up: it's a ${weekdayName(c.date)} this week.` : '';
 
 		if (reminders.nightBefore.enabled && !settings.putOut.includes(c.key)) {
 			plan.push({
@@ -55,8 +57,9 @@ export const planReminders = (settings: Settings, now = new Date()): PlannedRemi
 				kind: 'nightBefore',
 				at: at(nightBefore(c), reminders.nightBefore.time),
 				title: `${phrase} tomorrow`,
-				body: `Put ${plural ? 'them' : 'it'} out tonight.${movedNote}`,
+				body: `Time to wheel ${plural ? 'them' : 'it'} out 🌙 Collections start at 6 am.${movedNote}`,
 				collectionKey: c.key,
+				bins,
 			});
 		}
 		if (reminders.morningOf.enabled) {
@@ -65,8 +68,9 @@ export const planReminders = (settings: Settings, now = new Date()): PlannedRemi
 				kind: 'morningOf',
 				at: at(c.date, reminders.morningOf.time),
 				title: `${phrase} today`,
-				body: `It's collection day. Make sure ${plural ? "they're" : "it's"} out.`,
+				body: `It's bin day! 🚛 Make sure ${plural ? "they're" : "it's"} out.`,
 				collectionKey: c.key,
+				bins,
 			});
 		}
 		if (reminders.holidayChanges && moved) {
@@ -74,9 +78,10 @@ export const planReminders = (settings: Settings, now = new Date()): PlannedRemi
 				id: idFor(c.key, 'moved'),
 				kind: 'moved',
 				at: at(addDays(c.date, -3), '18:00'),
-				title: `Collection day changes this week`,
+				title: `📅 Bin day moves this week`,
 				body: `Your ${phrase} will be collected on ${shortDate(c.date)} instead of the usual day.`,
 				collectionKey: c.key,
+				bins,
 			});
 		}
 	}
@@ -89,7 +94,7 @@ export const planReminders = (settings: Settings, now = new Date()): PlannedRemi
 			kind: 'expiry',
 			at: warnAt,
 			title: 'Your bin calendar runs out soon',
-			body: `Bindicator has dates up to ${shortDate(last)}. Update the app to get the new council calendar.`,
+			body: `Bindicator has dates up to ${shortDate(last)}. Update the app to get the new council calendar 🗓️`,
 		});
 	}
 

@@ -1,3 +1,4 @@
+import { mascotPicture } from '../lib/bins';
 import { binNightFor, planReminders } from './reminders';
 import { getBinNight, getNext } from './schedule';
 import { defaultSettings } from './settings';
@@ -58,6 +59,15 @@ describe('planReminders', () => {
 		expect(plan.length).toBeLessThanOrEqual(64);
 		expect(plan.every((r) => r.id < 2 ** 31)).toBe(true);
 		expect(new Set(plan.map((r) => r.id)).size).toBe(plan.length);
+	});
+
+	test('reminders carry the bins for the mascot picture', () => {
+		const plan = planReminders(settings(), sunday);
+		const oct23 = plan.find((r) => r.collectionKey === '2026-10-23' && r.kind === 'nightBefore')!;
+		expect(mascotPicture(oct23.bins)).toBe('black-green');
+		expect(mascotPicture(['green', 'blue'])).toBe('blue-green');
+		expect(mascotPicture(['blue', 'brown'])).toBe('blue');
+		expect(mascotPicture(plan.find((r) => r.kind === 'expiry')?.bins)).toBe('bindicator');
 	});
 
 	test('the Christmas move gets an advance warning', () => {

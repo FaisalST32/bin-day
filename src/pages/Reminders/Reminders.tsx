@@ -7,7 +7,7 @@ import appIcon from '../../assets/brand/appicon.png';
 import { BinIcon } from '../../components/BinIcon';
 import { ChevronLeft } from '../../components/Icons';
 import { TimeField } from '../../components/TimeField';
-import { BIN_KINDS, BINS } from '../../lib/bins';
+import { BIN_KINDS, BINS, mascotPicture } from '../../lib/bins';
 import { formatTime, weekdayName } from '../../lib/dates';
 import { useIsDark } from '../../lib/useTheme';
 import { requestNotificationPermission } from '../../services/notifications';
@@ -73,6 +73,7 @@ export const RemindersPage = () => {
 									<b>{preview.title}</b>
 									<p>{preview.body}</p>
 								</div>
+								<img className='thumb' src={`${import.meta.env.BASE_URL}notifications/${mascotPicture(preview.bins)}.jpg`} alt='' />
 							</div>
 						</div>
 					)}

@@ -53,6 +53,15 @@
 	flex-shrink: 0;
 }
 
+.notif .thumb {
+	width: 52px;
+	height: 52px;
+	border-radius: 12px;
+	object-fit: cover;
+	flex-shrink: 0;
+	align-self: center;
+}
+
 .notif .top {
 	display: flex;
 	justify-content: space-between;

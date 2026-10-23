@@ -1,5 +1,6 @@
 import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { BinKind, mascotPicture } from '../lib/bins';
 import { planReminders } from './reminders';
 import { Settings } from './settings';
 
@@ -72,8 +73,8 @@ export const scheduleReminders = async (settings: Settings) => {
 	const plan = planReminders(settings).slice(0, 60);
 	if (!plan.length) return;
 	const exact = await exactAlarmsAllowed();
-	await LocalNotifications.schedule({
-		notifications: plan.map((r) => ({
+	const notifications = (pictures: boolean) =>
+		plan.map((r) => ({
 			id: r.id,
 			title: r.title,
 			body: r.body,
@@ -84,8 +85,23 @@ export const scheduleReminders = async (settings: Settings) => {
 			extra: { kind: r.kind, collectionKey: r.collectionKey },
 			schedule: { at: r.at, allowWhileIdle: true },
 			isExactNotification: exact,
-		})),
-	});
+			...(pictures ? mascot(r.bins) : {}),
+		}));
+	try {
+		await LocalNotifications.schedule({ notifications: notifications(true) });
+	} catch (e) {
+		// A missing picture fails the whole batch, so never let it cost the user their reminders.
+		console.warn('Scheduling with pictures failed, retrying without', e);
+		await LocalNotifications.schedule({ notifications: notifications(false) });
+	}
+};
+
+/** The bin mascot picture: an iOS attachment, or the large icon on Android. */
+const mascot = (bins?: BinKind[]) => {
+	const name = mascotPicture(bins);
+	return Capacitor.getPlatform() === 'ios'
+		? { attachments: [{ id: 'mascot', url: `res:///notifications/${name}.jpg` }] }
+		: { largeIcon: `notif_${name.replace(/-/g, '_')}` };
 };
 
 /** Calls back when the user taps "Done, it's out" on a night-before notification. */

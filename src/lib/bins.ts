@@ -54,5 +54,18 @@ export const binsPhrase = (bins: BinKind[]) => {
 	return `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} bins`;
 };
 
+const MASCOT_PICTURES = new Set(['black', 'blue', 'brown', 'green', 'black-green', 'blue-green', 'brown-green']);
+
+/**
+ * Name of the mascot picture for these bins, as shipped in public/notifications/<name>.jpg and
+ * Android's drawable notif_<name>. Falls back to the first bin, or the orange app mascot.
+ */
+export const mascotPicture = (bins: BinKind[] = []) => {
+	const sorted = BIN_KINDS.filter((b) => bins.includes(b));
+	const key = sorted.join('-');
+	if (MASCOT_PICTURES.has(key)) return key;
+	return sorted[0] ?? 'bindicator';
+};
+
 export const binsContents = (bins: BinKind[]) =>
 	bins.map((b) => BINS[b].contents).join(' · ');
