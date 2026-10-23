@@ -10,7 +10,8 @@
     "test.e2e": "cypress run",
     "test.unit": "vitest",
     "lint": "eslint",
-    "update-calendars": "node scripts/update-calendars.mjs"
+    "update-calendars": "node scripts/update-calendars.mjs",
+    "build:test": "tsc && vite build --mode testing"
   },
   "dependencies": {
     "@capacitor/android": "^8.5.3",

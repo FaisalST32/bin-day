@@ -19,7 +19,10 @@ export const BIN_NIGHT_END = 7;
 
 const cache = new Map<string, Collection[]>();
 
-/** Hidden code with a collection every day, for trying out reminders, bin night and widgets. */
+/**
+ * Hidden code with a collection every day, for trying out reminders, bin night and widgets.
+ * Only recognised in the dev server and `npm run build:test`, never in store builds.
+ */
 export const TEST_CODE = 'TEST';
 
 const TEST_ROTATION = [
@@ -41,7 +44,7 @@ const testCalendar = (): RawCollection[] => {
 };
 
 const readRaw = (code: string): RawCollection[] | undefined => {
-	if (code === TEST_CODE) return testCalendar();
+	if ((import.meta.env.DEV || import.meta.env.MODE === 'testing') && code === TEST_CODE) return testCalendar();
 	const builtIn = CollectionData[code];
 	if (builtIn) return builtIn;
 	// Calendars uploaded as PDFs in older versions were saved here.
