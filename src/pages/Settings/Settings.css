@@ -1,0 +1,32 @@
+.settings .row {
+	cursor: pointer;
+	text-decoration: none;
+}
+
+.settings .row .end svg {
+	color: var(--faint);
+}
+
+.inline-input {
+	margin-left: auto;
+	text-align: right;
+	border: 0;
+	background: none;
+	color: var(--ink);
+	font: inherit;
+	font-size: 16px;
+	outline: none;
+	min-width: 0;
+	flex: 1;
+}
+
+.inline-input::placeholder {
+	color: var(--faint);
+}
+
+.fine {
+	font-size: 13px;
+	color: var(--muted);
+	margin: 14px 4px 0;
+	line-height: 1.4;
+}

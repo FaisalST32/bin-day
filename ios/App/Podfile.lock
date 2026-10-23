@@ -10,9 +10,11 @@ PODS:
     - Capacitor
   - CapacitorLocalNotifications (8.3.1):
     - Capacitor
+  - CapacitorSplashScreen (8.0.2):
+    - Capacitor
   - CapacitorStatusBar (8.0.4):
     - Capacitor
-  - CapawesomeCapacitorFilePicker (8.1.0):
+  - CapawesomeCapacitorAppUpdate (8.1.0):
     - Capacitor
 
 DEPENDENCIES:
@@ -22,8 +24,9 @@ DEPENDENCIES:
   - "CapacitorHaptics (from `../../node_modules/@capacitor/haptics`)"
   - "CapacitorKeyboard (from `../../node_modules/@capacitor/keyboard`)"
   - "CapacitorLocalNotifications (from `../../node_modules/@capacitor/local-notifications`)"
+  - "CapacitorSplashScreen (from `../../node_modules/@capacitor/splash-screen`)"
   - "CapacitorStatusBar (from `../../node_modules/@capacitor/status-bar`)"
-  - "CapawesomeCapacitorFilePicker (from `../../node_modules/@capawesome/capacitor-file-picker`)"
+  - "CapawesomeCapacitorAppUpdate (from `../../node_modules/@capawesome/capacitor-app-update`)"
 
 EXTERNAL SOURCES:
   Capacitor:
@@ -38,10 +41,12 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/@capacitor/keyboard"
   CapacitorLocalNotifications:
     :path: "../../node_modules/@capacitor/local-notifications"
+  CapacitorSplashScreen:
+    :path: "../../node_modules/@capacitor/splash-screen"
   CapacitorStatusBar:
     :path: "../../node_modules/@capacitor/status-bar"
-  CapawesomeCapacitorFilePicker:
-    :path: "../../node_modules/@capawesome/capacitor-file-picker"
+  CapawesomeCapacitorAppUpdate:
+    :path: "../../node_modules/@capawesome/capacitor-app-update"
 
 SPEC CHECKSUMS:
   Capacitor: 2f67eaeb8ed79909cd35b5e7439a5c2a9ca58e0f
@@ -50,9 +55,10 @@ SPEC CHECKSUMS:
   CapacitorHaptics: 296f771ecd89c7a1bd92a7b6826a7d268e2e70f5
   CapacitorKeyboard: f9e85e685082e9f63404de15db4a4291448b0912
   CapacitorLocalNotifications: e0747a329ddde3074d52dc74a003688af90e42be
+  CapacitorSplashScreen: 7bf61c2001557ff9e195e601c6b87344480d3c65
   CapacitorStatusBar: ff844df1f126da6c4fbc4028272425fa3a91e7e3
-  CapawesomeCapacitorFilePicker: 63170fae6d17f3ce2547ffc0290f287e7bdc45d7
+  CapawesomeCapacitorAppUpdate: 13c61e2ea93c42e42c636d85d3613fa6fb3e89fe
 
-PODFILE CHECKSUM: f8bd54299fd3b554e327418e7972bdad1c6e7b8e
+PODFILE CHECKSUM: 5432adf4a72209c8d2f0254048dd9e2c5cbf1c3d
 
 COCOAPODS: 1.17.0

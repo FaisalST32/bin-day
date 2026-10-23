@@ -19,6 +19,7 @@ export default defineConfig({
 		globals: true,
 		environment: 'jsdom',
 		setupFiles: './src/setupTests.ts',
+		env: { TZ: 'Europe/London' },
 	},
 	build: {
 		target: 'esnext', // <--------- ✅✅✅✅✅✅

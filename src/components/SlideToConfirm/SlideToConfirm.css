@@ -1,0 +1,46 @@
+.slide-confirm {
+	position: relative;
+	height: 66px;
+	border-radius: 999px;
+	background: #1b1d22;
+	border: 1px solid #2a2d33;
+	padding: 6px;
+	overflow: hidden;
+	touch-action: none;
+	user-select: none;
+}
+
+.slide-fill {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	opacity: 0.18;
+	border-radius: 999px;
+}
+
+.slide-label {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	place-items: center;
+	padding-left: 40px;
+	font-weight: 700;
+	color: #d9dbe0;
+	font-size: 17px;
+	pointer-events: none;
+}
+
+.slide-knob {
+	position: relative;
+	width: 54px;
+	height: 54px;
+	border-radius: 50%;
+	border: 0;
+	padding: 0;
+	display: grid;
+	place-items: center;
+	color: #fff;
+	cursor: grab;
+	touch-action: none;
+}

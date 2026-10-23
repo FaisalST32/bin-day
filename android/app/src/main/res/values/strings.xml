@@ -4,4 +4,9 @@
     <string name="title_activity_main">Bindicator</string>
     <string name="package_name">io.zyur.bindicator</string>
     <string name="custom_url_scheme">io.zyur.bindicator</string>
+    <string name="widget_next_bin_label">Next bin</string>
+    <string name="widget_next_bin_description">Which bin goes out next, and when.</string>
+    <string name="widget_coming_up_label">Coming up</string>
+    <string name="widget_coming_up_description">Your next three collections.</string>
+    <string name="widget_empty">Open Bindicator to set up your collection code.</string>
 </resources>

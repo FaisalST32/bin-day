@@ -1,50 +1,92 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import {
+	IonApp,
+	IonLabel,
+	IonRouterOutlet,
+	IonTabBar,
+	IonTabButton,
+	IonTabs,
+	setupIonicReact,
+} from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import Onboarding from './pages/Onboarding';
+import { Redirect, Route } from 'react-router-dom';
 
-/* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
-
-/* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';
 import '@ionic/react/css/structure.css';
 import '@ionic/react/css/typography.css';
+import './theme/app.css';
+import './theme/tabs.css';
 
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
+import { CalendarIcon, HomeIcon, SettingsIcon } from './components/Icons';
+import { UpdateSheet } from './components/UpdateSheet/UpdateSheet';
+import { useSystemTheme } from './lib/useTheme';
+import { OnboardingPage } from './pages/Onboarding/Onboarding';
+import { RemindersPage } from './pages/Reminders/Reminders';
+import { SchedulePage } from './pages/Schedule/Schedule';
+import { SettingsPage } from './pages/Settings/Settings';
+import { TodayPage } from './pages/Today/Today';
+import { hasCode } from './services/schedule';
+import { AppStateProvider, useAppState } from './state/AppState';
 
-/* Theme variables */
-import './theme/variables.css';
-import { HomePage } from './pages/Home';
-import { SettingsPage } from './pages/Settings';
+setupIonicReact({ swipeBackEnabled: true });
 
-setupIonicReact({
-	swipeBackEnabled: false,
-});
-
-const App: React.FC = () => (
-	<IonApp>
-		<IonReactRouter>
+const Tabs = () => {
+	const { settings } = useAppState();
+	if (!hasCode(settings.code)) return <Redirect to='/onboarding' />;
+	return (
+		<IonTabs>
 			<IonRouterOutlet>
-				<Route exact path='/onboarding'>
-					<Onboarding />
-				</Route>
-				<Route exact path='/home' component={HomePage}></Route>
-				<Route exact path='/settings'>
-					<SettingsPage />
-				</Route>
-				<Route exact path='/'>
-					<Redirect to='/onboarding' />
+				<Route exact path='/tabs/today' component={TodayPage} />
+				<Route exact path='/tabs/schedule' component={SchedulePage} />
+				<Route exact path='/tabs/settings' component={SettingsPage} />
+				<Route exact path='/tabs/settings/reminders' component={RemindersPage} />
+				<Route exact path='/tabs'>
+					<Redirect to='/tabs/today' />
 				</Route>
 			</IonRouterOutlet>
+			<IonTabBar slot='bottom' className='floating-tabs'>
+				<IonTabButton tab='today' href='/tabs/today'>
+					<HomeIcon />
+					<IonLabel>Today</IonLabel>
+				</IonTabButton>
+				<IonTabButton tab='schedule' href='/tabs/schedule'>
+					<CalendarIcon />
+					<IonLabel>Schedule</IonLabel>
+				</IonTabButton>
+				<IonTabButton tab='settings' href='/tabs/settings'>
+					<SettingsIcon />
+					<IonLabel>Settings</IonLabel>
+				</IonTabButton>
+			</IonTabBar>
+		</IonTabs>
+	);
+};
+
+const Routes = () => {
+	const { settings } = useAppState();
+	return (
+		<IonReactRouter>
+			<IonRouterOutlet>
+				<Route exact path='/onboarding' component={OnboardingPage} />
+				<Route path='/tabs' render={() => <Tabs />} />
+				<Route exact path='/'>
+					<Redirect to={hasCode(settings.code) ? '/tabs/today' : '/onboarding'} />
+				</Route>
+			</IonRouterOutlet>
+			{hasCode(settings.code) && <UpdateSheet />}
 		</IonReactRouter>
-	</IonApp>
-);
+	);
+};
+
+const App = () => {
+	useSystemTheme();
+	return (
+		<IonApp>
+			<AppStateProvider>
+				<Routes />
+			</AppStateProvider>
+		</IonApp>
+	);
+};
 
 export default App;

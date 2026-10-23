@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <color name="bin_black">#4B515C</color>
+    <color name="bin_brown">#9A6847</color>
+    <color name="bin_green">#46B35D</color>
+    <color name="widget_card">#17191D</color>
+    <color name="widget_cell">#24272C</color>
+    <color name="widget_ink">#F4F4F5</color>
+    <color name="widget_muted">#9A9EA7</color>
+</resources>

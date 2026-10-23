@@ -1,0 +1,39 @@
+.update-sheet .upd-head {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+
+.update-sheet .upd-head img {
+	width: 60px;
+	height: 60px;
+	border-radius: 15px;
+	object-fit: cover;
+	background: #fff;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.update-sheet .ver {
+	font-size: 13.5px;
+	color: var(--muted);
+	margin-top: 6px;
+	font-weight: 500;
+}
+
+.update-sheet .lead {
+	color: var(--muted);
+	font-size: 15.5px;
+	line-height: 1.4;
+	margin: 0 0 16px;
+}
+
+.update-sheet .whatsnew {
+	margin: 4px 0 16px;
+	padding-left: 20px;
+	font-size: 15px;
+	line-height: 1.5;
+}
+
+.update-sheet .whatsnew li + li {
+	margin-top: 4px;
+}
